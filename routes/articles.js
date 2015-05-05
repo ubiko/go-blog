@@ -91,6 +91,10 @@ module.exports = function(app){
 
         article.save(function(err){
             if(err){
+                if(err.name == 'ValidationError'){
+                    res.statusCode = 400;
+                    return res.render('articles/failed_created', { message: err, article: article });
+                }
                 console.log('Error while saving article : ' + err);
                 res.send({ error: err });
                 return
@@ -128,7 +132,7 @@ module.exports = function(app){
                 }else{
                     if(err.name == 'ValidationError'){
                         res.statusCode = 400;
-                        res.send({ error: 'Validation error' });
+                        return res.render('articles/failed_updated', { message: err, article: article });
                     }else{
                         res.statusCode = 500;
                         res.send({ error: 'Server error' });

@@ -5,7 +5,7 @@ var Article = new Schema({
 
     title: {
         type: String,
-        require: true
+        required: true
     },
 
     description: {
@@ -14,7 +14,7 @@ var Article = new Schema({
 
     content: {
         type: String,
-        require: true
+        required: true
     },
 
     createdAt: {
