@@ -2,7 +2,9 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var session = require('express-session');
 var cookieParser = require('cookie-parser');
+var flash = require('express-flash');
 var methodOverride = require('method-override')
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -12,6 +14,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var sessionStore = new session.MemoryStore;
 
 // mongoDB configuration
 mongoose.connect(configDB.url, function(err, res){
@@ -31,7 +34,24 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('secret'));
+app.use(session({
+    secret: 'cookieSecret',
+    resave: true,
+    saveUninitialized: true,
+    store: sessionStore,
+}));
+app.use(flash());
+
+// Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
+// https://gist.github.com/brianmacarthur/a4e3e0093d368aa8e423
+app.use(function(req, res, next){
+    // if there's a flash message in the session request, make it available in the response, then delete it
+    res.locals.flashMessage = req.session.flashMessage;
+    delete req.session.flashMessage;
+    next();
+});
+
 // custom http method
 app.use(methodOverride(function(req, res){
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -80,6 +100,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;

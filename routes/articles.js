@@ -100,6 +100,11 @@ module.exports = function(app){
                 return
             }else{
                 console.log('Article created')
+                req.session.flashMessage = {
+                    type: 'success',
+                    message: 'Article was successfully created.'
+                }
+
                 return res.redirect('/article/'+ article.id);
             }
         });
@@ -128,6 +133,10 @@ module.exports = function(app){
             return article.save(function(err){
                 if(!err){
                     console.log('updated.');
+                    req.session.flashMessage = {
+                        type: 'success',
+                        message: 'Article was successfully updated.'
+                    }
                     return res.redirect('/article/'+ article.id);
                 }else{
                     if(err.name == 'ValidationError'){
@@ -166,6 +175,10 @@ module.exports = function(app){
             return article.remove(function(err){
                 if(!err){
                     console.log('Removed article.');
+                    req.session.flashMessage = {
+                        type: 'success',
+                        message: 'Article was successfully removed.'
+                    }
                     return res.redirect('/articles');
                 }else{
                     res.statusCode = 500;

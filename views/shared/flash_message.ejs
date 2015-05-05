@@ -1,0 +1,7 @@
+<!-- show any messages -->
+<% if(flashMessage && flashMessage.message) { %>
+  <div class="alert alert-<%= flashMessage.type %> alert-dismissible" role="alert" id="flash-alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong><%= flashMessage.message %></strong>
+  </div>
+<% } %>
