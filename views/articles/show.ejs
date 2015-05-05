@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <div class="clearfix">
+      <div class="col-md-12 column">
+        <blockquote>
+          <p>
+            <%= article.title %>
+          </p> <small><cite><%= article.createdAt %></cite></small>
+        </blockquote>
+        <p>
+          <%= article.content %>
+        </p>
+      </div>
+      <div class='pull-right'>
+        <a href="/articles">Back</a>
+        <a href="/article/new" class="btn btn-primary">Add New</a>
+        <a href="/article/<%= article.id%>/edit" class='btn btn-success'>Edit</a>
+      </div>
+    </div>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+    <% include ../partials/javascripts %>
+</body>
+</html>

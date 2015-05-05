@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <div class="row clearfix">
+        <div class="col-sm-6 col-sm-offset-3">
+
+          <h1><span class="fa fa-pencil"></span> Update Article</h1>
+
+          <!-- ARTICLE FORM -->
+          <form action="/article/<%= article.id %>" method="post">
+            <input type="hidden" name="_method" value="put">
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" class="form-control" name="title" value="<%= article.title %>">
+            </div>
+            <div class="form-group">
+              <label>Content</label>
+              <textarea class="form-control" name="content"><%= article.content %></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-warning btn-lg">Update Article</button>
+          </form>
+
+          <hr>
+
+          <p><a href="/articles">Back</a></p>
+
+        </div>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+  <% include ../partials/javascripts %> 
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <div class="row clearfix">
+      <div class="col-sm-6 col-sm-offset-3">
+        <h2><center>My Articles</center></h2>
+        <% for (var x in articles) { %>
+          <blockquote>
+            <p>
+                <%= articles[x].content %>
+            </p> <small> <%= articles[x].title %> <cite> @<%= articles[x].createdAt %></cite></small>
+            <a href="/article/<%= articles[x].id %>" class='btn btn-default'>Show</a>
+            <a href="/article/<%= articles[x].id%>/edit" class='btn btn-success'>Edit</a>
+            <a href="/article/<%= articles[x].id %>" data-method="DELETE" class="delete-link btn btn-danger" data-confirm="Do You want to remove this article?">Destroy</a>
+          </blockquote>
+        <% } %>
+        <a href="/article/new" class="btn btn-primary pull-right">Add New</a>
+      </div>
+    </div>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+    <% include ../partials/javascripts %>
+</body>
+</html>
