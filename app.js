@@ -8,10 +8,11 @@ var flash = require('express-flash');
 var methodOverride = require('method-override')
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var configDB = require('./config/database');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 
 var app = express();
 var sessionStore = new session.MemoryStore;
@@ -41,6 +42,8 @@ app.use(session({
     saveUninitialized: true,
     store: sessionStore,
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash());
 
 // Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
@@ -62,11 +65,14 @@ app.use(methodOverride(function(req, res){
   }
 }))
 
+// passport config
+var passport = require('./config/passport');
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
 app.use('/', routes);
-app.use('/users', users);
+user = require('./routes/users')(app);
 article = require('./routes/articles')(app);
 
 
