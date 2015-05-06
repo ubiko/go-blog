@@ -16,10 +16,10 @@
         <% for (var x in articles) { %>
           <blockquote>
             <p>
-                <%= articles[x].content %>
-            </p> <small> <%= articles[x].title %> <cite> @<%= articles[x].createdAt %></cite></small>
-            <a href="/article/<%= articles[x].id %>" class='btn btn-default'>Show</a>
-            <a href="/article/<%= articles[x].id%>/edit" class='btn btn-success'>Edit</a>
+                <%= articles[x].title %>
+            </p> <small> <%= articles[x].content %> <cite> @<%= articles[x].createdAt %></cite></small>
+            <a href="/article/<%= articles[x].slug %>" class='btn btn-default'>Show</a>
+            <a href="/article/<%= articles[x].slug %>/edit" class='btn btn-success'>Edit</a>
             <a href="/article/<%= articles[x].id %>" data-method="DELETE" class="delete-link btn btn-danger" data-confirm="Do You want to remove this article?">Destroy</a>
           </blockquote>
         <% } %>

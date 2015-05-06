@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var URLSlugs = require('mongoose-url-slugs');
 
-var Article = new Schema({
+var ArticleSchema = new Schema({
 
     title: {
         type: String,
@@ -13,6 +14,11 @@ var Article = new Schema({
     },
 
     content: {
+        type: String,
+        required: true
+    },
+
+    slug: {
         type: String,
         required: true
     },
@@ -29,4 +35,7 @@ var Article = new Schema({
 
 });
 
-module.exports = mongoose.model('Article', Article);
+// Save slugs to 'slug' field.
+ArticleSchema.plugin(URLSlugs('title', { field: 'slug', update: true }));
+
+module.exports = mongoose.model('Article', ArticleSchema);

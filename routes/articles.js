@@ -24,16 +24,16 @@ module.exports = function(app){
     };
 
     /**
-    * Find and retrieves a single article by its ID
+    * Find and retrieves a single article by its SLUG
     * @param {Object} req HTTP request object.
     * @param {Object} res HTTP response object.
     */
 
     showArticle = function(req, res){
 
-        console.log('GET - /article/:id');
+        console.log('GET - /article/:slug');
 
-        return Article.findById(req.params.id, function(err, article){
+        return Article.findOne({ slug: req.params.slug }, function(err, article){
             if(!article){
                 res.statusCode = 404;
                 return res.send({ error: 'Page not found' });
@@ -50,14 +50,14 @@ module.exports = function(app){
     };
 
     /**
-    * Find and retrieves a single article by its ID
+    * Find and retrieves a single article by its SLUG
     */
 
     editArticle = function(req, res){
 
-        console.log('GET - /article/:id/edit');
+        console.log('GET - /article/:slug/edit');
 
-        return Article.findById(req.params.id, function(err, article){
+        return Article.findOne({ slug: req.params.slug }, function(err, article){
             if(!article){
                 res.statusCode = 404;
                 return res.send({ error: 'Page not found' });
@@ -105,7 +105,7 @@ module.exports = function(app){
                     message: 'Article was successfully created.'
                 }
 
-                return res.redirect('/article/'+ article.id);
+                return res.redirect('/article/'+ article.slug);
             }
         });
     };
@@ -137,7 +137,7 @@ module.exports = function(app){
                         type: 'success',
                         message: 'Article was successfully updated.'
                     }
-                    return res.redirect('/article/'+ article.id);
+                    return res.redirect('/article/'+ article.slug);
                 }else{
                     if(err.name == 'ValidationError'){
                         res.statusCode = 400;
@@ -201,9 +201,9 @@ module.exports = function(app){
         return res.render('articles/new');
     });
 
-    app.get('/article/:id', showArticle);
+    app.get('/article/:slug', showArticle);
 
     app.put('/article/:id', updateArticle);
    
-    app.get('/article/:id/edit', editArticle);
+    app.get('/article/:slug/edit', editArticle);
 };
