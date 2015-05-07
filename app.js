@@ -55,6 +55,12 @@ app.use(function(req, res, next){
     next();
 });
 
+// Displays user
+app.use(function(req, res, next){
+    res.locals.user = req.session.user;
+    next();
+});
+
 // custom http method
 app.use(methodOverride(function(req, res){
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {

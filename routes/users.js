@@ -30,12 +30,13 @@ module.exports = function(app){
                 res.redirect('/login');
                 return;
             }
+            req.session.user = user;
             return res.redirect('/articles')
         })(req, res);
     };
 
     logout = function(req, res) {
-        req.logout();
+        req.session.user = null;
         res.redirect('/login');
     };
 
