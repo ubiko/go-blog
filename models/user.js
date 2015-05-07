@@ -16,6 +16,11 @@ var UserSchema = new Schema({
         required: true
     },
 
+    articles : [{
+        type: Schema.Types.ObjectId,
+        ref: 'Article'
+    }],
+
     createdAt: {
         type: Date,
         default: Date.now

@@ -17,10 +17,12 @@
           <blockquote>
             <p>
                 <%= articles[x].title %>
-            </p> <small> <%= articles[x].content %> <cite> @<%= articles[x].createdAt %></cite></small>
+            </p> <small> <%= articles[x].content %> <cite> @<%= articles[x].createdAt %></cite><br /> author : <%= articles[x].author.email %></small>
             <a href="/article/<%= articles[x].slug %>" class='btn btn-default'>Show</a>
-            <a href="/article/<%= articles[x].slug %>/edit" class='btn btn-success'>Edit</a>
-            <a href="/article/<%= articles[x].id %>" data-method="DELETE" class="delete-link btn btn-danger" data-confirm="Do You want to remove this article?">Destroy</a>
+            <% if (user._id == articles[x].author.id) { %>
+                <a href="/article/<%= articles[x].slug %>/edit" class='btn btn-success'>Edit</a>
+                <a href="/article/<%= articles[x].id %>" data-method="DELETE" class="delete-link btn btn-danger" data-confirm="Do You want to remove this article?">Destroy</a>
+            <% } %>
           </blockquote>
         <% } %>
         <a href="/article/new" class="btn btn-primary pull-right">Add New</a>

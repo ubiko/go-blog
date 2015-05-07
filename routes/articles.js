@@ -1,4 +1,5 @@
-var Article = require('../models/article')
+var Article = require('../models/article');
+var User = require('../models/user');
 
 module.exports = function(app){
 
@@ -12,7 +13,7 @@ module.exports = function(app){
 
         console.log('GET - /articles');
         
-        return Article.find(function(err, articles){
+        return Article.find().populate('author').exec(function(err, articles){
             if(!err){
                 return res.render('articles/index', { articles: articles });
             }else{
@@ -57,7 +58,8 @@ module.exports = function(app){
 
         console.log('GET - /article/:slug/edit');
 
-        return Article.findOne({ slug: req.params.slug }, function(err, article){
+        var user = req.session.user;
+        return Article.findOne({ slug: req.params.slug, author: user._id }, function(err, article){
             if(!article){
                 res.statusCode = 404;
                 return res.send({ error: 'Page not found' });
@@ -82,31 +84,47 @@ module.exports = function(app){
     createArticle = function(req, res){
         
         console.log('POST - /article');
-
+        var user = req.session.user;
         var article = new Article({
             title       : req.body.title,
             description : req.body.description,
-            content     : req.body.content
+            content     : req.body.content,
+            author      : user._id
         });
 
-        article.save(function(err){
-            if(err){
-                if(err.name == 'ValidationError'){
-                    res.statusCode = 400;
-                    return res.render('articles/failed_created', { message: err, article: article });
-                }
-                console.log('Error while saving article : ' + err);
-                res.send({ error: err });
-                return
-            }else{
-                console.log('Article created')
+
+        User.findById(user._id, function(err, user) {
+            if(err || !user){ 
                 req.session.flashMessage = {
-                    type: 'success',
-                    message: 'Article was successfully created.'
+                    type: 'error',
+                    message: 'Article was failed to create.'
                 }
 
-                return res.redirect('/article/'+ article.slug);
+                return res.redirect('/articles');
             }
+
+
+            article.save(function(err){
+                if(err){
+                    if(err.name == 'ValidationError'){
+                        res.statusCode = 400;
+                        return res.render('articles/failed_created', { message: err, article: article });
+                    }
+                    console.log('Error while saving article : ' + err);
+                    res.send({ error: err });
+                    return
+                }else{
+                    console.log('Article created')
+                    req.session.flashMessage = {
+                        type: 'success',
+                        message: 'Article was successfully created.'
+                    }
+
+                    user.articles.push(article);
+                    user.save();
+                    return res.redirect('/article/'+ article.slug);
+                }
+            });
         });
     };
 
