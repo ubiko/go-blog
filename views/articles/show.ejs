@@ -3,30 +3,32 @@
 <head>
     <% include ../partials/head %>
 </head>
-<body class="container">
+<body class="container" style="background:url('../<%= article.pic %>'); background-size:cover;">
 
     <header>
         <% include ../partials/header %>
     </header>
+    
 
-    <div class="clearfix">
+    <article class="clearfix">
       <% include ../shared/flash_message %>
-      <div class="col-md-12 column">
-        <blockquote>
-          <p>
-            <%= article.title %>
-          </p> <small><cite><%= article.createdAt %></cite></small>
-        </blockquote>
+      <div class="article col-md-12 column">
+        <div>
+          <h1><%= article.title %></h1>
+          <small><cite><%= article.createdAt %></cite></small>
+        </div>
+        <div>
         <p>
           <%= article.content %>
         </p>
+      </div>
       </div>
       <div class='pull-right'>
         <a href="/articles">Back</a>
         <a href="/article/new" class="btn btn-primary">Add New</a>
         <a href="/article/<%= article.slug%>/edit" class='btn btn-success'>Edit</a>
       </div>
-    </div>
+    </article>
 
     <footer>
         <% include ../partials/footer %>

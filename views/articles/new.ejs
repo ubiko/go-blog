@@ -15,7 +15,7 @@
           <h1><span class="fa fa-clipboard"></span> Add Article</h1>
 
           <!-- ARTICLE FORM -->
-          <form action="/article" method="post">
+          <form action="/article" method="post" enctype="multipart/form-data">
             <div class="form-group">
               <label>Title</label>
               <input type="text" class="form-control" name="title">
@@ -27,6 +27,10 @@
             <div class="form-group">
               <label>Content</label>
               <textarea class="form-control" name="content"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Image for Header</label>
+              <input type="file" class="form-control" name="pic" accept="image/*">
             </div>
 
             <button type="submit" class="btn btn-warning btn-lg">Submit Article</button>

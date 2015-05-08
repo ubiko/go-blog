@@ -30,6 +30,11 @@ var ArticleSchema = new Schema({
         ref: 'User'
     },
 
+    pic : {
+       data: Buffer,
+       type: String
+    },
+
     createdAt: {
         type: Date,
         default: Date.now

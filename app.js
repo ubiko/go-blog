@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var multer  = require('multer');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var session = require('express-session');
@@ -11,11 +12,11 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var configDB = require('./config/database');
-
 var routes = require('./routes/index');
 
 var app = express();
 var sessionStore = new session.MemoryStore;
+
 
 // mongoDB configuration
 mongoose.connect(configDB.url, function(err, res){
@@ -32,6 +33,28 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
+
+app.use(multer({
+  dest: './public/uploads/',
+  rename: function (fieldname, filename) {
+    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+  },
+  onFileUploadStart: function (file) {
+     console.log(file.mimetype);
+     if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg' && file.mimetype !== 'image/jpeg') {
+       return false;
+     } else {
+       console.log(file.fieldname + ' is starting ...');
+     }
+   },
+   onFileUploadData: function (file, data) {
+     console.log(data.length + ' of ' + file.fieldname + ' arrived');
+   },
+   onFileUploadComplete: function (file) {
+     console.log(file.fieldname + ' uploaded to  ' + file.path);
+   }
+}));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -74,7 +97,7 @@ app.use(methodOverride(function(req, res){
 // passport config
 var passport = require('./config/passport');
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use("/public", express.static(path.join(__dirname, 'public')));
 
 // routes
 app.use('/', routes);

@@ -1,6 +1,7 @@
 var Article = require('../models/article');
 var User = require('../models/user');
 
+
 module.exports = function(app){
 
     /**
@@ -21,7 +22,7 @@ module.exports = function(app){
                 console.log('Internal error(%d): %s', res.statusCode, err.message);
                 return res.send({ error: 'Server Error' });
             }
-        });      
+        });  
     };
 
     /**
@@ -89,12 +90,13 @@ module.exports = function(app){
             title       : req.body.title,
             description : req.body.description,
             content     : req.body.content,
+            pic         : req.files.pic.path,
             author      : user._id
         });
 
 
         User.findById(user._id, function(err, user) {
-            if(err || !user){ 
+            if(err || !user){
                 req.session.flashMessage = {
                     type: 'error',
                     message: 'Article was failed to create.'
@@ -206,6 +208,8 @@ module.exports = function(app){
             })
         })
     };
+
+
 
     // Link routes and action
 
