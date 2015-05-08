@@ -37,7 +37,7 @@ app.set('view engine', 'ejs');
 app.use(multer({
   dest: './public/uploads/',
   rename: function (fieldname, filename) {
-    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
   },
   onFileUploadStart: function (file) {
      console.log(file.mimetype);
